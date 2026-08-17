@@ -35,7 +35,7 @@ e.experiment_group,
 count(*) as users_activated
 from applications a 
 left join experiment e on a.user_id = e.user_id 
-where a.activated = 1
+where a.activated = 1 and a.approved = 1
 group by e.experiment_group 
 )
 select 
