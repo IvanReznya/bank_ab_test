@@ -1,0 +1,13 @@
+"experiment_group","category","count_transactions","total_amount","total_revenue"
+A,groceries,230,506947.00,8498.77
+A,marketplaces,251,511009.00,8716.69
+A,other,246,465522.00,7754.87
+A,restaurants,258,513731.00,9131.89
+A,transport,223,413145.00,6933.18
+A,travel,208,392020.00,6552.30
+B,groceries,320,613683.00,10301.10
+B,marketplaces,302,621906.00,10219.30
+B,other,289,649623.00,10354.30
+B,restaurants,310,645001.00,10124.70
+B,transport,306,609123.00,9938.32
+B,travel,297,629897.00,10275.70
