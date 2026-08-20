@@ -77,6 +77,7 @@ else:
     print('Статистического значимого различия не обнаружено.')
 print('-' * 60)
 
+
 images_dir = ROOT / 'images'
 images_dir.mkdir(exist_ok = True)# CITY
 plt.figure(figsize=(9, 5))
