@@ -30,7 +30,6 @@
 
 ```text
 bank_ab_test/
-│
 ├── analysis/
 │   ├── 01_funnel_analysis.py
 │   ├── 02_balance_analysis.py
@@ -39,29 +38,23 @@ bank_ab_test/
 │   └── 05_categories_analysis.py
 │
 ├── data/
-│   ├── funnel.csv
-│   ├── city.csv
-│   ├── device.csv
-│   ├── age.csv
-│   ├── user_metrics.csv
-│   └── categories.csv
-│
-├── sql/
-│   └── ...
+│   ├── raw/
+│   │   ├── users.csv
+│   │   ├── experiment.csv
+│   │   ├── applications.csv
+│   │   ├── transactions.csv
+│   │   └── sessions.csv
+│   └── processed/
+│       ├── funnel.csv
+│       ├── city.csv
+│       ├── device.csv
+│       ├── age.csv
+│       ├── user_metrics.csv
+│       └── categories.csv
 │
 ├── images/
-│   ├── funnel.png
-│   ├── balance_city.png
-│   ├── balance_device.png
-│   ├── balance_age.png
-│   ├── transactions_distribution.png
-│   ├── transactions_effect.png
-│   ├── revenue_distribution.png
-│   ├── revenue_effect.png
-│   ├── categories_revenue.png
-│   ├── categories_transactions.png
-│   └── categories_revenue_per_transaction.png
-│
+├── sql/
+├── .gitignore
 ├── requirements.txt
 └── README.md
 ```
