@@ -1,8 +1,12 @@
 import pandas as pd
 import numpy as np
 from scipy.stats import ttest_ind
+from pathlib import Path
 
-user_metrics = pd.read_csv('/Users/ivan/Desktop/bank_project/data/user_metrics.csv')
+
+ROOT = Path(__file__).resolve().parents[1]
+user_metrics = pd.read_csv(ROOT / 'data' / 'user_metrics.csv')
+
 
 alpha = 0.05
 
@@ -39,7 +43,7 @@ if p_value < alpha:
     print('Различие статистически значимо.')
 else:
     print('Нет оснований отвергать H0.')
-    print('Статистически значимого различия не обнаружено.')
+    print('Статистического значимого различия не обнаружено.')
 print('-' * 60)
 
 # 3. Bootstrap 95% доверительный интервал
