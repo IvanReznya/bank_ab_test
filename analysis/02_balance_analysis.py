@@ -1,13 +1,16 @@
 import pandas as pd
 from scipy.stats import chi2_contingency, ttest_ind
+from pathlib import Path
+
 
 # Проверка баланса эксперементальных групп по категориальному признаку
 # H0: категориальный признак не зависит от эксперементальной группы
 # H1: категориальный признак зависит от эксперементальной группы
 
-city = pd.read_csv('/Users/ivan/Desktop/bank_project/data/city.csv')
-device = pd.read_csv('/Users/ivan/Desktop/bank_project/data/device.csv')
-age = pd.read_csv('/Users/ivan/Desktop/bank_project/data/age.csv')
+ROOT = Path(__file__).resolve().parents[1]
+city = pd.read_csv(ROOT / 'data' / 'city.csv')
+device =  pd.read_csv(ROOT / 'data' / 'device.csv')
+age =  pd.read_csv(ROOT / 'data' / 'age.csv')
 
 alpha = 0.05
 
