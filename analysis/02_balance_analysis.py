@@ -1,13 +1,13 @@
 import pandas as pd
-from scipy.stats import chi2_contingency
+from scipy.stats import chi2_contingency, ttest_ind
 
-
-# Проверка баланса эксперементальных групп
+# Проверка баланса эксперементальных групп по категориальному признаку
 # H0: категориальный признак не зависит от эксперементальной группы
 # H1: категориальный признак зависит от эксперементальной группы
 
 city = pd.read_csv('/Users/ivan/Desktop/bank_project/data/city.csv')
 device = pd.read_csv('/Users/ivan/Desktop/bank_project/data/device.csv')
+age = pd.read_csv('/Users/ivan/Desktop/bank_project/data/age.csv')
 
 alpha = 0.05
 
@@ -41,3 +41,32 @@ print('City')
 chi2_pearson(city_table, alpha)
 print('Device')
 chi2_pearson(device_table, alpha)
+
+# Проверка баланса эксперементальных групп по количественному признаку (возрасту)
+# H0: mu_age_A = mu_age_B
+# H1: mu_age_A != mu_age_B
+
+# Используем t-критерий Уэлча
+
+age_A = age[age['experiment_group'] == 'A']['age'].dropna()
+age_B = age[age['experiment_group'] == 'B']['age'].dropna()
+
+t_stat, p_value = ttest_ind(
+    age_A,
+    age_B,
+    equal_var = False
+)
+print('Age')
+print('-' * 60)
+print(f'Mean A = {age_A.mean():.2f}')
+print(f'Mean B = {age_B.mean():.2f}')
+print(f'Difference B - A = {age_B.mean() - age_A.mean():.2f}')
+print(f't_stat = {t_stat:.2f}')
+print(f'p_value = {p_value:.2f}')
+if p_value < alpha:
+    print('Отвеграем H0.')
+    print('Различие между группами статистически значимо.')
+else:
+    print('Нет оснований отвергать H0.')
+    print('Статистического значимого различия не обнаружено.')
+print('-' * 60)
