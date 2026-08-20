@@ -1,12 +1,15 @@
 import pandas as pd
 from statsmodels.stats.proportion import proportions_ztest, confint_proportions_2indep
+from pathlib import Path
+
 
 # Анализ воронки
 # H0: p_A = p_B
 # H1: p_A != p_B
 
+ROOT = Path(__file__).resolve().parents[1]
+funnel = pd.read_csv(ROOT / 'data' / 'funnel.csv')
 
-funnel = pd.read_csv('/Users/ivan/Desktop/bank_project/data/funnel.csv')
 
 # Уровень значимости
 
