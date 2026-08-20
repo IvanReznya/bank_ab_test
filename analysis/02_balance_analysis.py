@@ -1,6 +1,9 @@
 import pandas as pd
 from scipy.stats import chi2_contingency, ttest_ind
 from pathlib import Path
+import matplotlib.pyplot as plt
+import seaborn as sns
+
 
 
 # Проверка баланса эксперементальных групп по категориальному признаку
@@ -8,9 +11,9 @@ from pathlib import Path
 # H1: категориальный признак зависит от эксперементальной группы
 
 ROOT = Path(__file__).resolve().parents[1]
-city = pd.read_csv(ROOT / 'data' / 'city.csv')
-device =  pd.read_csv(ROOT / 'data' / 'device.csv')
-age =  pd.read_csv(ROOT / 'data' / 'age.csv')
+city = pd.read_csv(ROOT / 'data'  / 'processed' / 'city.csv')
+device =  pd.read_csv(ROOT / 'data'  / 'processed' / 'device.csv')
+age =  pd.read_csv(ROOT / 'data'  / 'processed' / 'age.csv')
 
 alpha = 0.05
 
@@ -73,3 +76,74 @@ else:
     print('Нет оснований отвергать H0.')
     print('Статистического значимого различия не обнаружено.')
 print('-' * 60)
+
+
+city_plot = city.copy()
+
+sns.barplot(
+    data = city_plot,
+    x = 'city',
+    y = 'users_percent',
+    hue = 'experiment_group'
+)
+plt.xlabel('Город')
+plt.ylabel('Доля пользователей, %')
+plt.title('Распределение пользователей по городам')
+plt.xticks(rotation = 45)
+plt.legend(title = 'Группа')
+plt.tight_layout()
+
+
+plt.figure()
+sns.barplot(
+    data = device,
+    x = 'device',
+    y = 'users_percent',
+    hue = 'experiment_group'
+)
+plt.xlabel('Устройство')
+plt.ylabel('Доля пользователей, %')
+plt.title('Распределение пользователей по устройствам')
+plt.legend(title = 'Группа')
+plt.tight_layout()
+
+
+plt.figure()
+sns.histplot(
+    data = age,
+    x = 'age',
+    hue = 'experiment_group',
+    stat = 'density',
+    common_norm = False,
+    bins = 25,
+    alpha = 0.4
+)
+plt.xlabel('Возраст')
+plt.ylabel('Плотность')
+plt.title('Распределение возраста в группах A и B')
+plt.tight_layout()
+
+
+images_dir = ROOT / 'images'
+images_dir.mkdir(exist_ok = True)
+
+plt.savefig(
+    images_dir / 'balance_city.png',
+    dpi = 300,
+    bbox_inches = 'tight'
+)
+
+plt.savefig(
+    images_dir / 'balance_device.png',
+    dpi = 300,
+    bbox_inches = 'tight'
+)
+
+plt.savefig(
+    images_dir / 'balance_age.png',
+    dpi = 300,
+    bbox_inches = 'tight'
+)
+
+
+plt.show()

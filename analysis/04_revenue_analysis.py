@@ -2,10 +2,12 @@ import pandas as pd
 import numpy as np
 from scipy.stats import ttest_ind
 from pathlib import Path
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 
 ROOT = Path(__file__).resolve().parents[1]
-user_metrics = pd.read_csv(ROOT / 'data' / 'user_metrics.csv')
+user_metrics = pd.read_csv(ROOT / 'data'  / 'processed' / 'user_metrics.csv')
 
 alpha = 0.05
 
@@ -90,5 +92,54 @@ else:
     print('Статистически значимого различия не обнаружено.')
 print('-' * 60)
 
+
+plt.figure(figsize=(8, 5))
+sns.histplot(
+    data=user_metrics,
+    x='sum_revenue',
+    hue='experiment_group',
+    bins=50,
+    stat='density',
+    common_norm=False,
+    alpha=0.4
+)
+plt.yscale('log')
+plt.xlabel('Revenue на пользователя, ₽')
+plt.ylabel('Плотность')
+plt.title('Распределение revenue в группах A и B')
+plt.tight_layout()
+
+plt.figure(figsize=(6, 5))
+plt.errorbar(
+    x = ['B - A'],
+    y = [difference],
+    yerr = [
+        [difference - lower],
+        [upper - difference]
+    ],
+    fmt = 'o',
+    capsize = 8
+)
+
+plt.axhline(y = 0, linestyle = '--')
+plt.ylabel('Разница среднего revenue, ₽')
+plt.title('Эффект версии B на revenue')
+plt.tight_layout()
+
+
+images_dir = ROOT / 'images'
+images_dir.mkdir(exist_ok = True)
+plt.savefig(
+    images_dir / 'revenue_distribution.png',
+    dpi = 300,
+    bbox_inches = 'tight'
+)
+plt.savefig(
+    images_dir / 'revenue_effect.png',
+    dpi = 300,
+    bbox_inches = 'tight'
+)
+
+plt.show()
 
 

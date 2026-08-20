@@ -1,6 +1,8 @@
 import pandas as pd
 from statsmodels.stats.proportion import proportions_ztest, confint_proportions_2indep
 from pathlib import Path
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 
 # Анализ воронки
@@ -8,7 +10,7 @@ from pathlib import Path
 # H1: p_A != p_B
 
 ROOT = Path(__file__).resolve().parents[1]
-funnel = pd.read_csv(ROOT / 'data' / 'funnel.csv')
+funnel = pd.read_csv(ROOT / 'data' / 'processed' / 'funnel.csv')
 
 
 # Уровень значимости
@@ -74,4 +76,50 @@ print("Users -> Activated")
 ztest_with_ci(funnel['users_activated'], funnel['users'], alpha)
 
 
+plot_df = funnel[
+    [
+        'experiment_group',
+        'cr_application',
+        'cr_approved',
+        'cr_activated',
+        'cr_total'
+    ]
+].copy()
 
+plot_df = plot_df.rename(columns={
+    'cr_application': 'Users → Applications',
+    'cr_approved': 'Applications → Approved',
+    'cr_activated': 'Approved → Activated',
+    'cr_total': 'Users → Activated'
+})
+
+plot_df = plot_df.melt(
+    id_vars = 'experiment_group',
+    var_name = 'metric',
+    value_name = 'conversion'
+)
+
+sns.barplot(
+    data = plot_df,
+    x = 'metric',
+    y = 'conversion',
+    hue = 'experiment_group'
+)
+
+plt.xlabel('')
+plt.ylabel('Conversion, %')
+plt.title('Conversion metrics: A vs B')
+plt.xticks(rotation = 15)
+plt.legend(title = 'Group')
+
+plt.tight_layout()
+
+images_dir = ROOT / 'images'
+images_dir.mkdir(exist_ok=True)
+
+plt.savefig(
+    images_dir / 'funnel.png',
+    dpi = 300,
+    bbox_inches = 'tight'
+)
+plt.show()

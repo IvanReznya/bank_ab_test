@@ -1,5 +1,7 @@
 import pandas as pd
 from pathlib import Path
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 # Анализ транзакций по категориям
 #
@@ -11,7 +13,7 @@ from pathlib import Path
 # Статистические тесты по отдельным категориям не проводятся
 
 ROOT = Path(__file__).resolve().parents[1]
-categories = pd.read_csv(ROOT / 'data' / 'categories.csv')
+categories = pd.read_csv(ROOT / 'data'  / 'processed' / 'categories.csv')
 
 # 1. Сравнение общего дохода банка по категориям
 
@@ -59,3 +61,71 @@ print(transactions.sort_values('difference', ascending = False))
 print('-' * 60)
 print(revenue_per_transaction)
 print('-' * 60)
+
+
+
+plt.figure(figsize=(9, 5))
+sns.barplot(
+    data = categories,
+    x = 'category',
+    y = 'total_revenue',
+    hue = 'experiment_group'
+)
+
+plt.xlabel('Категория')
+plt.ylabel('Total revenue, ₽')
+plt.title('Revenue по категориям: A vs B')
+plt.xticks(rotation = 30)
+plt.legend(title = 'Группа')
+plt.tight_layout()
+
+
+plt.figure(figsize=(9, 5))
+sns.barplot(
+    data = categories,
+    x = 'category',
+    y = 'count_transactions',
+    hue = 'experiment_group'
+)
+plt.xlabel('Категория')
+plt.ylabel('Количество транзакций')
+plt.title('Количество транзакций по категориям: A vs B')
+plt.xticks(rotation = 30)
+plt.legend(title = 'Группа')
+plt.tight_layout()
+
+
+plt.figure(figsize=(9, 5))
+sns.barplot(
+    data = categories,
+    x = 'category',
+    y = 'revenue_per_transaction',
+    hue = 'experiment_group'
+)
+plt.xlabel('Категория')
+plt.ylabel('Revenue на транзакцию, ₽')
+plt.title('Revenue на одну транзакцию по категориям')
+plt.xticks(rotation = 30)
+plt.legend(title = 'Группа')
+plt.tight_layout()
+
+
+images_dir = ROOT / 'images'
+images_dir.mkdir(exist_ok = True)
+plt.savefig(
+    images_dir / 'categories_revenue.png',
+    dpi = 300,
+    bbox_inches = 'tight'
+)
+plt.savefig(
+    images_dir / 'categories_transactions.png',
+    dpi = 300,
+    bbox_inches = 'tight'
+)
+plt.savefig(
+    images_dir / 'categories_revenue_per_transaction.png',
+    dpi = 300,
+    bbox_inches = 'tight'
+)
+
+plt.show()
