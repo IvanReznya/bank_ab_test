@@ -70,24 +70,38 @@ print('-' * 60)
 
 
 # 4. Распределение количества транзакций
+images_dir = ROOT / 'images'
+images_dir.mkdir(exist_ok = True)
+
 
 plt.figure(figsize=(8, 5))
+
 sns.histplot(
-    data = user_metrics,
-    x = 'count_transactions',
-    hue = 'experiment_group',
-    discrete = True,
-    stat = 'density',
-    common_norm = False,
-    alpha = 0.4
+    data=user_metrics,
+    x='count_transactions',
+    hue='experiment_group',
+    discrete=True,
+    stat='density',
+    common_norm=False,
+    alpha=0.4
 )
+
 plt.xlabel('Количество транзакций на пользователя')
 plt.ylabel('Плотность')
-plt.title('Распределение количества транзакций в группах A и B')
+plt.title('Распределение количества транзакций')
+
 plt.tight_layout()
+
+plt.savefig(
+    images_dir / 'transactions_distribution.png',
+    dpi=300,
+    bbox_inches='tight'
+)
+
 
 
 plt.figure(figsize=(6, 5))
+
 plt.errorbar(
     x=['B - A'],
     y=[difference],
@@ -95,28 +109,22 @@ plt.errorbar(
         [difference - lower],
         [upper - difference]
     ],
-    fmt = 'o',
-    capsize = 8
+    fmt='o',
+    capsize=8
 )
-plt.axhline(y = 0, linestyle = '--')
+
+plt.axhline(
+    y=0,
+    linestyle='--'
+)
+
 plt.ylabel('Разница среднего количества транзакций')
 plt.title('Эффект версии B на количество транзакций')
+
 plt.tight_layout()
-
-
-images_dir = ROOT / 'images'
-images_dir.mkdir(exist_ok = True)
-
-plt.savefig(
-    images_dir / 'transactions_distribution.png',
-    dpi = 300,
-    bbox_inches = 'tight'
-)
 
 plt.savefig(
     images_dir / 'transactions_effect.png',
-    dpi = 300,
-    bbox_inches = 'tight'
+    dpi=300,
+    bbox_inches='tight'
 )
-
-plt.show()

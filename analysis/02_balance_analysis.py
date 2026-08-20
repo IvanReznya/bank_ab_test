@@ -77,73 +77,62 @@ else:
     print('Статистического значимого различия не обнаружено.')
 print('-' * 60)
 
-
-city_plot = city.copy()
+images_dir = ROOT / 'images'
+images_dir.mkdir(exist_ok = True)# CITY
+plt.figure(figsize=(9, 5))
 
 sns.barplot(
-    data = city_plot,
-    x = 'city',
-    y = 'users_percent',
-    hue = 'experiment_group'
+    data=city,
+    x='city',
+    y='users_percent',
+    hue='experiment_group'
 )
+
 plt.xlabel('Город')
 plt.ylabel('Доля пользователей, %')
 plt.title('Распределение пользователей по городам')
-plt.xticks(rotation = 45)
-plt.legend(title = 'Группа')
+plt.xticks(rotation=45)
 plt.tight_layout()
 
+plt.savefig(images_dir / 'balance_city.png', dpi=300, bbox_inches='tight')
+plt.close()
 
-plt.figure()
+
+# DEVICE
+plt.figure(figsize=(8, 5))
+
 sns.barplot(
-    data = device,
-    x = 'device',
-    y = 'users_percent',
-    hue = 'experiment_group'
+    data=device,
+    x='device',
+    y='users_percent',
+    hue='experiment_group'
 )
+
 plt.xlabel('Устройство')
 plt.ylabel('Доля пользователей, %')
 plt.title('Распределение пользователей по устройствам')
-plt.legend(title = 'Группа')
 plt.tight_layout()
 
+plt.savefig(images_dir / 'balance_device.png', dpi=300, bbox_inches='tight')
+plt.close()
 
-plt.figure()
+
+# AGE
+plt.figure(figsize=(8, 5))
+
 sns.histplot(
-    data = age,
-    x = 'age',
-    hue = 'experiment_group',
-    stat = 'density',
-    common_norm = False,
-    bins = 25,
-    alpha = 0.4
+    data=age,
+    x='age',
+    hue='experiment_group',
+    stat='density',
+    common_norm=False,
+    bins=25,
+    alpha=0.4
 )
+
 plt.xlabel('Возраст')
 plt.ylabel('Плотность')
 plt.title('Распределение возраста в группах A и B')
 plt.tight_layout()
 
-
-images_dir = ROOT / 'images'
-images_dir.mkdir(exist_ok = True)
-
-plt.savefig(
-    images_dir / 'balance_city.png',
-    dpi = 300,
-    bbox_inches = 'tight'
-)
-
-plt.savefig(
-    images_dir / 'balance_device.png',
-    dpi = 300,
-    bbox_inches = 'tight'
-)
-
-plt.savefig(
-    images_dir / 'balance_age.png',
-    dpi = 300,
-    bbox_inches = 'tight'
-)
-
-
-plt.show()
+plt.savefig(images_dir / 'balance_age.png', dpi=300, bbox_inches='tight')

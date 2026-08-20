@@ -92,8 +92,11 @@ else:
     print('Статистически значимого различия не обнаружено.')
 print('-' * 60)
 
+images_dir = ROOT / 'images'
+images_dir.mkdir(exist_ok = True)
 
 plt.figure(figsize=(8, 5))
+
 sns.histplot(
     data=user_metrics,
     x='sum_revenue',
@@ -103,43 +106,49 @@ sns.histplot(
     common_norm=False,
     alpha=0.4
 )
+
 plt.yscale('log')
+
 plt.xlabel('Revenue на пользователя, ₽')
 plt.ylabel('Плотность')
 plt.title('Распределение revenue в группах A и B')
+
 plt.tight_layout()
 
+plt.savefig(
+    images_dir / 'revenue_distribution.png',
+    dpi=300,
+    bbox_inches='tight'
+)
+
 plt.figure(figsize=(6, 5))
+
 plt.errorbar(
-    x = ['B - A'],
-    y = [difference],
-    yerr = [
+    x=['B - A'],
+    y=[difference],
+    yerr=[
         [difference - lower],
         [upper - difference]
     ],
-    fmt = 'o',
-    capsize = 8
+    fmt='o',
+    capsize=8
 )
 
-plt.axhline(y = 0, linestyle = '--')
+plt.axhline(
+    y=0,
+    linestyle='--'
+)
+
 plt.ylabel('Разница среднего revenue, ₽')
 plt.title('Эффект версии B на revenue')
+
 plt.tight_layout()
 
-
-images_dir = ROOT / 'images'
-images_dir.mkdir(exist_ok = True)
-plt.savefig(
-    images_dir / 'revenue_distribution.png',
-    dpi = 300,
-    bbox_inches = 'tight'
-)
 plt.savefig(
     images_dir / 'revenue_effect.png',
-    dpi = 300,
-    bbox_inches = 'tight'
+    dpi=300,
+    bbox_inches='tight'
 )
 
-plt.show()
 
 
